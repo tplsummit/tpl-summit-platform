@@ -1,261 +1,273 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPL Summit - Executive Business Platform</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛰️</text></svg>">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'tpl-navy': '#1a2332',
-                        'tpl-charcoal': '#2d3748',
-                        'tpl-gold': '#c6a96b',
-                        'tpl-champagne': '#f7f0e6',
-                        'tpl-blush': '#e8ddd4',
-                        'tpl-stone': '#f5f1eb',
-                        'tpl-taupe': '#9d8f7f'
-                    },
-                    fontFamily: {
-                        'serif': ['Playfair Display', 'serif'],
-                        'sans': ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .gradient-gold { background: linear-gradient(135deg, #c6a96b 0%, #d4b97a 100%); }
-        .gradient-navy { background: linear-gradient(135deg, #1a2332 0%, #2d3748 100%); }
-        .glass-effect { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.95); }
-        .shadow-elegant { box-shadow: 0 20px 60px rgba(26, 35, 50, 0.1); }
-        .transition-elegant { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    </style>
-</head>
-<body class="bg-gradient-to-br from-tpl-stone via-white to-tpl-champagne font-sans">
-    <!-- Authentication Modal -->
-    <div id="authModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-        <div class="glass-effect rounded-2xl p-8 max-w-md mx-4 shadow-elegant">
-            <div class="text-center mb-8">
-                <div class="text-6xl mb-4">⛰️</div>
-                <h1 class="font-serif text-3xl font-bold text-tpl-navy mb-2">TPL Summit</h1>
-                <p class="text-tpl-taupe">Executive Business Platform</p>
-            </div>
-            
-            <div id="authTabs" class="flex mb-6 bg-tpl-stone rounded-lg p-1">
-                <button onclick="showAuthTab('login')" class="auth-tab active flex-1 py-2 px-4 rounded-md font-medium transition-elegant">Sign In</button>
-                <button onclick="showAuthTab('register')" class="auth-tab flex-1 py-2 px-4 rounded-md font-medium transition-elegant">Register</button>
-            </div>
-            
-            <!-- Login Form -->
-            <form id="loginForm" class="auth-form space-y-4">
-                <div>
-                    <label class="block text-sm font-medium text-tpl-navy mb-2">Email</label>
-                    <input type="email" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-tpl-navy mb-2">Password</label>
-                    <input type="password" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                </div>
-                <button type="submit" class="w-full gradient-gold text-white py-3 rounded-lg font-medium transition-elegant hover:shadow-lg">
-                    Access Platform
-                </button>
-            </form>
-            
-            <!-- Register Form -->
-            <form id="registerForm" class="auth-form hidden space-y-4">
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-tpl-navy mb-2">First Name</label>
-                        <input type="text" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-tpl-navy mb-2">Last Name</label>
-                        <input type="text" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
+<!-- Email Integration Section -->
+        <section id="email" class="section">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Email Integration & Communication Center</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" onclick="openModal('composeEmailModal')">
+                            ✉️ Compose Email
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('emailTemplateModal')">
+                            📝 Templates
+                        </button>
+                        <button class="btn btn-secondary" onclick="syncEmails()">
+                            🔄 Sync Emails
+                        </button>
                     </div>
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-tpl-navy mb-2">Email</label>
-                    <input type="email" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-tpl-navy mb-2">Password</label>
-                    <input type="password" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-tpl-navy mb-2">Organization</label>
-                    <input type="text" class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                </div>
-                <button type="submit" class="w-full gradient-gold text-white py-3 rounded-lg font-medium transition-elegant hover:shadow-lg">
-                    Create Account
-                </button>
-            </form>
-            
-            <div class="text-center mt-6">
-                <button onclick="demoLogin()" class="text-tpl-gold hover:text-tpl-navy transition-elegant text-sm font-medium">
-                    Continue with Demo Account
-                </button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Main Platform -->
-    <div id="mainPlatform" class="hidden min-h-screen">
-        <!-- Header -->
-        <header class="glass-effect border-b border-tpl-blush shadow-elegant sticky top-0 z-40">
-            <div class="max-w-7xl mx-auto px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4">
-                        <div class="text-3xl">⛰️</div>
-                        <div>
-                            <h1 class="font-serif text-2xl font-bold text-tpl-navy">TPL Summit</h1>
-                            <p class="text-sm text-tpl-taupe">Executive Business Platform</p>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">1,247</div>
+                        <div class="stat-label">Total Emails</div>
+                        <div class="stat-change positive">↗ +89 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">23</div>
+                        <div class="stat-label">Unread Messages</div>
+                        <div class="stat-change positive">↓ -12 from yesterday</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">94%</div>
+                        <div class="stat-label">Response Rate</div>
+                        <div class="stat-change positive">↗ +3% this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">2.3h</div>
+                        <div class="stat-label">Avg Response Time</div>
+                        <div class="stat-change positive">↓ -30min improvement</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 300px 1fr; gap: 2rem;">
+                    <div>
+                        <div class="data-table" style="margin-bottom: 1rem;">
+                            <div class="table-header">
+                                <h3 class="table-title">Email Folders</h3>
+                            </div>
+                            <div style="padding: 0;">
+                                <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer; display: flex; justify-content: space-between;" onclick="filterEmails('inbox')">
+                                    <span>📥 Inbox</span>
+                                    <span style="background: var(--accent); color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.8rem;">23</span>
+                                </div>
+                                <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="filterEmails('sent')">
+                                    📤 Sent
+                                </div>
+                                <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="filterEmails('drafts')">
+                                    📝 Drafts
+                                </div>
+                                <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="filterEmails('clients')">
+                                    👥 Client Communications
+                                </div>
+                                <div style="padding: 0.75rem 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="filterEmails('automated')">
+                                    🤖 Automated Responses
+                                </div>
+                                <div style="padding: 0.75rem 1rem; cursor: pointer;" onclick="filterEmails('archive')">
+                                    📁 Archive
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="data-table">
+                            <div class="table-header">
+                                <h3 class="table-title">Quick Actions</h3>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="openModal('bulkEmailModal')">📧 Bulk Email</button>
+                                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="setupEmailAutomation()">⚙️ Automation</button>
+                                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="emailAnalytics()">📊 Analytics</button>
+                                <button class="btn btn-secondary" style="width: 100%;" onclick="manageSignatures()">✍️ Signatures</button>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div class="flex items-center space-x-6">
-                        <div class="text-right">
-                            <div class="text-sm font-medium text-tpl-navy" id="currentDate"></div>
-                            <div class="text-xs text-tpl-taupe" id="currentTime"></div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Email List</h3>
+                            <div class="table-actions">
+                                <input type="search" placeholder="Search emails..." style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); margin-right: 1rem;">
+                                <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius);">
+                                    <option>All Emails</option>
+                                    <option>Unread</option>
+                                    <option>Starred</option>
+                                    <option>Today</option>
+                                </select>
+                            </div>
                         </div>
                         
-                        <div class="flex items-center space-x-3">
-                            <div class="w-10 h-10 gradient-gold rounded-full flex items-center justify-center text-white font-medium">
-                                <span id="userInitials">JS</span>
+                        <div style="max-height: 500px; overflow-y: auto;">
+                            <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer; background: var(--gray-50);" onclick="openEmail(1)">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <strong style="color: var(--primary);">John Smith</strong>
+                                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                                        <span style="background: var(--accent); color: white; padding: 0.2rem 0.5rem; border-radius: 10px; font-size: 0.7rem;">NEW</span>
+                                        <small style="color: var(--gray-500);">2 hours ago</small>
+                                    </div>
+                                </div>
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;">Project Update Required</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Hi there, I wanted to follow up on the website redesign project. Could you please provide an update on the current status...</div>
                             </div>
-                            <div class="text-sm">
-                                <div class="font-medium text-tpl-navy" id="userName">John Summit</div>
-                                <div class="text-tpl-taupe">Executive</div>
+                            
+                            <div style="padding: 1rem; border-bottom: 1px solid var(--gray-200); cursor: pointer;" onclick="openEmail(2)">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                                    <strong>Sarah Johnson</strong>
+                                    <small style="color: var(--gray-500);">5 hours ago</small>
+                                </div>
+                                <div style="font-weight: 600; margin-bottom: 0.3rem;">Invoice Payment Confirmation</div>
+                                <div style="color: var(--gray-600); font-size: 0.9rem;">Thank you for the invoice. Payment has been processed and you should see it reflected in your account within 2-3 business days...</div>
                             </div>
-                            <button onclick="logout()" class="text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                                </svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- Navigation -->
-        <nav class="glass-effect border-b border-tpl-blush">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="flex space-x-8">
-                    <button onclick="showSection('dashboard')" class="nav-btn active py-4 px-3 border-b-2 border-tpl-gold text-tpl-navy font-medium">
-                        <span class="mr-2">📊</span>Dashboard
-                    </button>
-                    <button onclick="showSection('revenue')" class="nav-btn py-4 px-3 border-b-2 border-transparent text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                        <span class="mr-2">💰</span>Revenue
-                    </button>
-                    <button onclick="showSection('clients')" class="nav-btn py-4 px-3 border-b-2 border-transparent text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                        <span class="mr-2">👥</span>Clients
-                    </button>
-                    <button onclick="showSection('meetings')" class="nav-btn py-4 px-3 border-b-2 border-transparent text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                        <span class="mr-2">📅</span>Meetings
-                    </button>
-                    <button onclick="showSection('invoices')" class="nav-btn py-4 px-3 border-b-2 border-transparent text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                        <span class="mr-2">📄</span>Invoices
-                    </button>
-                    <button onclick="showSection('insights')" class="nav-btn py-4 px-3 border-b-2 border-transparent text-tpl-taupe hover:text-tpl-navy transition-elegant">
-                        <span class="mr-2">🤖</span>AI Insights
-                    </button>
-                </div>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="max-w-7xl mx-auto px-6 py-8">
-            <!-- Dashboard Section -->
-            <div id="dashboard-section" class="section">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-2">Executive Dashboard</h2>
-                    <p class="text-tpl-taupe">Real-time business intelligence for TPL Summit</p>
-                </div>
-
-                <!-- Key Metrics -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 gradient-gold rounded-xl flex items-center justify-center text-white text-xl">💰</div>
-                            <div class="text-xs text-tpl-taupe uppercase tracking-wider">Total Revenue</div>
-                        </div>
-                        <div class="text-3xl font-bold text-tpl-navy" id="dashTotalRevenue">$0</div>
-                        <div class="text-sm text-tpl-taupe mt-1">All time earnings</div>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-tpl-navy rounded-xl flex items-center justify-center text-white text-xl">📈</div>
-                            <div class="text-xs text-tpl-taupe uppercase tracking-wider">This Month</div>
-                        </div>
-                        <div class="text-3xl font-bold text-tpl-navy" id="dashMonthlyRevenue">$0</div>
-                        <div class="text-sm text-tpl-taupe mt-1" id="dashMonthName">Current month</div>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-tpl-charcoal rounded-xl flex items-center justify-center text-white text-xl">👥</div>
-                            <div class="text-xs text-tpl-taupe uppercase tracking-wider">Active Clients</div>
-                        </div>
-                        <div class="text-3xl font-bold text-tpl-navy" id="dashActiveClients">0</div>
-                        <div class="text-sm text-tpl-taupe mt-1">Total relationships</div>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="w-12 h-12 bg-tpl-gold rounded-xl flex items-center justify-center text-white text-xl">🎯</div>
-                            <div class="text-xs text-tpl-taupe uppercase tracking-wider">Avg Deal</div>
-                        </div>
-                        <div class="text-3xl font-bold text-tpl-navy" id="dashAvgDeal">$0</div>
-                        <div class="text-sm text-tpl-taupe mt-1">Per transaction</div>
+                            
+                            <div style="padding: 1rem; border-bottom: 1px solid var(        <!-- CRM Section -->
+        <section id="crm" class="section">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Customer Relationship Management</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" onclick="openModal('addContactModal')">
+                            👤 Add Contact
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('importContactsModal')">
+                            📤 Import Contacts
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportCRM()">
+                            📊 Export CRM Data
+                        </button>
                     </div>
                 </div>
 
-                <!-- Quick Actions & Recent Activity -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <h3 class="font-serif text-xl font-semibold text-tpl-navy mb-6">Quick Actions</h3>
-                        <div class="space-y-4">
-                            <button onclick="showSection('revenue')" class="w-full flex items-center space-x-4 p-4 bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg hover:shadow-lg transition-elegant">
-                                <div class="w-10 h-10 gradient-gold rounded-lg flex items-center justify-center text-white">💰</div>
-                                <div class="text-left">
-                                    <div class="font-medium text-tpl-navy">Add Revenue</div>
-                                    <div class="text-sm text-tpl-taupe">Track new income</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Total Contacts</div>
+                        <div class="stat-change positive">↗ +8 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">42</div>
+                        <div class="stat-label">Active Leads</div>
+                        <div class="stat-change positive">↗ +12 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">89%</div>
+                        <div class="stat-label">Conversion Rate</div>
+                        <div class="stat-change positive">↗ +5% improvement</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$85K</div>
+                        <div class="stat-label">Pipeline Value</div>
+                        <div class="stat-change positive">↗ +15% from last month</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem;">
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Contact Database</h3>
+                            <div class="table-actions">
+                                <input type="search" placeholder="Search contacts..." style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); margin-right: 1rem;">
+                                <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius);">
+                                    <option>All Contacts</option>
+                                    <option>Active Leads</option>
+                                    <option>Customers</option>
+                                    <option>Partners</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Company</th>
+                                    <th>Email</th>
+                                    <th>Status</th>
+                                    <th>Last Contact</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>John Smith</strong></td>
+                                    <td>Acme Corporation</td>
+                                    <td>john@acme.com</td>
+                                    <td><span class="status-badge status-success">Customer</span></td>
+                                    <td>2 days ago</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="editContact(1)" title="Edit">✏️</button>
+                                        <button class="btn-icon" onclick="emailContact(1)" title="Email">📧</button>
+                                        <button class="btn-icon" onclick="scheduleCall(1)" title="Call">📞</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sarah Johnson</strong></td>
+                                    <td>TechStart Inc</td>
+                                    <td>sarah@techstart.com</td>
+                                    <td><span class="status-badge status-warning">Lead</span></td>
+                                    <td>1 week ago</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="editContact(2)" title="Edit">✏️</button>
+                                        <button class="btn-icon" onclick="emailContact(2)" title="Email">📧</button>
+                                        <button class="btn-icon" onclick="scheduleCall(2)" title="Call">📞</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mike Davis</strong></td>
+                                    <td>Global Solutions</td>
+                                    <td>mike@global.com</td>
+                                    <td><span class="status-badge status-info">Prospect</span></td>
+                                    <td>3 days ago</td>
+                                    <td>
+                                        <button class="btn-icon" onclick="editContact(3)" title="Edit">✏️</button>
+                                        <button class="btn-icon" onclick="emailContact(3)" title="Email">📧</button>
+                                        <button class="btn-icon" onclick="scheduleCall(3)" title="Call">📞</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div>
+                        <div class="data-table" style="margin-bottom: 1rem;">
+                            <div class="table-header">
+                                <h3 class="table-title">Quick Actions</h3>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.5rem;" onclick="openModal('bulkEmailModal')">📧 Send Bulk Email</button>
+                                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="generateReport()">📊 Generate Report</button>
+                                <button class="btn btn-secondary" style="width: 100%; margin-bottom: 0.5rem;" onclick="openModal('campaignModal')">📢 Create Campaign</button>
+                                <button class="btn btn-secondary" style="width: 100%;" onclick="syncContacts()">🔄 Sync Contacts</button>
+                            </div>
+                        </div>
+
+                        <div class="data-table">
+                            <div class="table-header">
+                                <h3 class="table-title">Lead Pipeline</h3>
+                            </div>
+                            <div style="padding: 1rem;">
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Qualified Leads</span>
+                                        <strong>24</strong>
+                                    </div>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                        <div style="background: var(--success); height: 100%; width: 60%; border-radius: 4px;"></div>
+                                    </div>
                                 </div>
-                            </button>
-                            <button onclick="showSection('meetings')" class="w-full flex items-center space-x-4 p-4 bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg hover:shadow-lg transition-elegant">
-                                <div class="w-10 h-10 bg-tpl-navy rounded-lg flex items-center justify-center text-white">📅</div>
-                                <div class="text-left">
-                                    <div class="font-medium text-tpl-navy">Schedule Meeting</div>
-                                    <div class="text-sm text-tpl-taupe">Book with clients</div>
+                                <div style="margin-bottom: 1rem;">
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>In Negotiation</span>
+                                        <strong>12</strong>
+                                    </div>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                        <div style="background: var(--warning); height: 100%; width: 40%; border-radius: 4px;"></div>
+                                    </div>
                                 </div>
-                            </button>
-                            <button onclick="showSection('invoices')" class="w-full flex items-center space-x-4 p-4 bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg hover:shadow-lg transition-elegant">
-                                <div class="w-10 h-10 bg-tpl-charcoal rounded-lg flex items-center justify-center text-white">📄</div>
-                                <div class="text-left">
-                                    <div class="font-medium text-tpl-navy">Create Invoice</div>
-                                    <div class="text-sm text-tpl-taupe">Professional billing</div>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="glass-effect rounded-2xl p-6 shadow-elegant border border-tpl-blush">
-                        <h3 class="font-serif text-xl font-semibold text-tpl-navy mb-4">AI Business Insights</h3>
-                        <div id="aiInsights" class="space-y-4">
-                            <div class="bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg p-4">
-                                <div class="flex items-start space-x-3">
-                                    <div class="text-2xl">🤖</div>
-                                    <div>
-                                        <h4 class="font-medium text-tpl-navy">Revenue Optimization</h4>
-                                        <p class="text-sm text-tpl-taupe mt-1">Add transaction data to unlock AI-powered business insights and revenue predictions.</p>
+                                <div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                        <span>Ready to Close</span>
+                                        <strong>6</strong>
+                                    </div>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                        <div style="background: var(--accent); height: 100%; width: 85%; border-radius: 4px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -263,700 +275,1803 @@
                     </div>
                 </div>
             </div>
+        </section>
 
-            <!-- Revenue Section -->
-            <div id="revenue-section" class="section hidden">
-                <div class="mb-8">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-2">Revenue Management</h2>
-                    <p class="text-tpl-taupe">Track and analyze all TPL Summit income streams</p>
+        <!-- Project Management Section -->
+        <section id="projects" class="section">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Project Management & Interactive Artifacts</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" onclick="openModal('newProjectModal')">
+                            🚀 New Project
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('artifactModal')">
+                            🎨 Create Artifact
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportProjects()">
+                            📊 Export Projects
+                        </button>
+                    </div>
                 </div>
 
-                <!-- Add Revenue Form -->
-                <div class="glass-effect rounded-2xl p-8 shadow-elegant border border-tpl-blush mb-8">
-                    <h3 class="font-serif text-xl font-semibold text-tpl-navy mb-6">Add New Revenue</h3>
-                    <form id="revenueForm" class="space-y-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Date</label>
-                                <input type="date" id="date" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Amount</label>
-                                <input type="number" id="amount" placeholder="0.00" required min="0" step="0.01" class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Revenue Source</label>
-                                <select id="source" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                                    <option value="">Select Revenue Source</option>
-                                    <optgroup label="🏔️ Summit Events">
-                                        <option value="Summit Registration - Executive">Summit Registration - Executive</option>
-                                        <option value="Summit Registration - VIP">Summit Registration - VIP</option>
-                                        <option value="Summit Registration - Premium">Summit Registration - Premium</option>
-                                        <option value="Masterclass Series">Masterclass Series</option>
-                                        <option value="Executive Workshop">Executive Workshop</option>
-                                        <option value="Leadership Intensive">Leadership Intensive</option>
-                                    </optgroup>
-                                    <optgroup label="💼 Consulting Services">
-                                        <option value="Executive Coaching">Executive Coaching</option>
-                                        <option value="Strategic Consulting">Strategic Consulting</option>
-                                        <option value="Leadership Development">Leadership Development</option>
-                                        <option value="Organizational Transformation">Organizational Transformation</option>
-                                        <option value="Team Facilitation">Team Facilitation</option>
-                                    </optgroup>
-                                    <optgroup label="🤝 Partnerships">
-                                        <option value="Platinum Sponsorship">Platinum Sponsorship</option>
-                                        <option value="Gold Sponsorship">Gold Sponsorship</option>
-                                        <option value="Silver Sponsorship">Silver Sponsorship</option>
-                                        <option value="Strategic Partnership">Strategic Partnership</option>
-                                        <option value="Media Partnership">Media Partnership</option>
-                                    </optgroup>
-                                    <optgroup label="🎤 Speaking & Content">
-                                        <option value="Keynote Speaking">Keynote Speaking</option>
-                                        <option value="Panel Moderation">Panel Moderation</option>
-                                        <option value="Content Creation">Content Creation</option>
-                                        <option value="Digital Course Sales">Digital Course Sales</option>
-                                        <option value="Book Revenue">Book Revenue</option>
-                                    </optgroup>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Client/Organization</label>
-                                <input type="text" id="client" placeholder="Client or organization name" required class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Payment Method</label>
-                                <select id="paymentMethod" class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                                    <option value="">Select Payment Method</option>
-                                    <option value="Wire Transfer">Wire Transfer</option>
-                                    <option value="ACH Transfer">ACH Transfer</option>
-                                    <option value="Credit Card">Credit Card</option>
-                                    <option value="PayPal">PayPal</option>
-                                    <option value="Stripe">Stripe</option>
-                                    <option value="Check">Check</option>
-                                    <option value="Cryptocurrency">Cryptocurrency</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-tpl-navy mb-2">Status</label>
-                                <select id="status" class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant">
-                                    <option value="Received">✅ Received</option>
-                                    <option value="Pending">⏳ Pending</option>
-                                    <option value="Processing">🔄 Processing</option>
-                                    <option value="Partial">📊 Partial Payment</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-tpl-navy mb-2">Notes & Details</label>
-                            <textarea id="notes" placeholder="Project details, contract terms, additional notes..." rows="3" class="w-full px-4 py-3 border border-tpl-blush rounded-lg focus:border-tpl-gold focus:ring-2 focus:ring-tpl-gold focus:ring-opacity-20 transition-elegant"></textarea>
-                        </div>
-                        <div class="flex space-x-4">
-                            <button type="submit" class="gradient-gold text-white px-8 py-3 rounded-lg font-medium transition-elegant hover:shadow-lg">
-                                Add Revenue
-                            </button>
-                            <button type="button" onclick="clearForm()" class="bg-gray-200 text-tpl-navy px-6 py-3 rounded-lg font-medium transition-elegant hover:bg-gray-300">
-                                Clear Form
-                            </button>
-                            <button type="button" onclick="generateInvoice()" class="bg-tpl-navy text-white px-6 py-3 rounded-lg font-medium transition-elegant hover:shadow-lg">
-                                Generate Invoice
-                            </button>
-                        </div>
-                    </form>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">18</div>
+                        <div class="stat-label">Active Projects</div>
+                        <div class="stat-change positive">↗ +3 this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">94%</div>
+                        <div class="stat-label">On-Time Delivery</div>
+                        <div class="stat-change positive">↗ +2% improvement</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">47</div>
+                        <div class="stat-label">Interactive Artifacts</div>
+                        <div class="stat-change positive">↗ +8 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$125K</div>
+                        <div class="stat-label">Project Value</div>
+                        <div class="stat-change positive">↗ +18% from last month</div>
+                    </div>
                 </div>
 
-                <!-- Revenue List -->
-                <div class="glass-effect rounded-2xl shadow-elegant border border-tpl-blush overflow-hidden">
-                    <div class="px-8 py-6 border-b border-tpl-blush bg-gradient-to-r from-tpl-stone to-tpl-champagne">
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <h3 class="font-serif text-xl font-semibold text-tpl-navy">Revenue Transactions</h3>
-                                <p class="text-tpl-taupe mt-1">Comprehensive income tracking</p>
-                            </div>
-                            <div class="flex space-x-3">
-                                <button onclick="exportRevenue()" class="bg-tpl-gold text-white px-4 py-2 rounded-lg font-medium transition-elegant hover:shadow-lg text-sm">
-                                    📊 Export
-                                </button>
-                            </div>
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Active Projects</h3>
+                        <div class="table-actions">
+                            <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); margin-right: 1rem;">
+                                <option>All Projects</option>
+                                <option>In Progress</option>
+                                <option>Planning</option>
+                                <option>Review</option>
+                                <option>Completed</option>
+                            </select>
+                            <button class="btn btn-secondary" onclick="toggleProjectView()">📋 List View</button>
                         </div>
                     </div>
-                    <div id="revenueList" class="overflow-x-auto">
-                        <div class="p-12 text-center text-tpl-taupe">
-                            <div class="text-6xl mb-4">⛰️</div>
-                            <h4 class="text-xl font-semibold mb-2">Ready for Revenue Tracking</h4>
-                            <p>Add your first TPL Summit income transaction to begin.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Other sections (simplified for demo) -->
-            <div id="clients-section" class="section hidden">
-                <div class="glass-effect rounded-2xl p-8 shadow-elegant border border-tpl-blush">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-4">Client Management</h2>
-                    <div class="text-center py-12 text-tpl-taupe">
-                        <div class="text-6xl mb-4">👥</div>
-                        <p>Client portal and relationship management coming soon.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="meetings-section" class="section hidden">
-                <div class="glass-effect rounded-2xl p-8 shadow-elegant border border-tpl-blush">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-4">Meeting Scheduler</h2>
-                    <div class="text-center py-12 text-tpl-taupe">
-                        <div class="text-6xl mb-4">📅</div>
-                        <p>Advanced meeting scheduling system coming soon.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="invoices-section" class="section hidden">
-                <div class="glass-effect rounded-2xl p-8 shadow-elegant border border-tpl-blush">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-4">Invoice Generator</h2>
-                    <div class="text-center py-12 text-tpl-taupe">
-                        <div class="text-6xl mb-4">📄</div>
-                        <p>Professional invoice generation system coming soon.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="insights-section" class="section hidden">
-                <div class="glass-effect rounded-2xl p-8 shadow-elegant border border-tpl-blush">
-                    <h2 class="font-serif text-3xl font-bold text-tpl-navy mb-4">AI Business Insights</h2>
-                    <div class="text-center py-12 text-tpl-taupe">
-                        <div class="text-6xl mb-4">🤖</div>
-                        <p>AI-powered revenue predictions and business insights coming soon.</p>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        // Data storage
-        let currentUser = null;
-        let transactions = JSON.parse(localStorage.getItem('tpl-transactions')) || [];
-        let clients = new Map();
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            updateDateTime();
-            setInterval(updateDateTime, 1000);
-            
-            // Set up auth forms
-            setupAuthForms();
-            
-            // Set default date
-            const dateInput = document.getElementById('date');
-            if (dateInput) {
-                dateInput.value = new Date().toISOString().split('T')[0];
-            }
-            
-            // Set up revenue form
-            const revenueForm = document.getElementById('revenueForm');
-            if (revenueForm) {
-                revenueForm.addEventListener('submit', handleRevenueSubmit);
-            }
-        });
-
-        // Update date and time
-        function updateDateTime() {
-            const now = new Date();
-            const dateElement = document.getElementById('currentDate');
-            const timeElement = document.getElementById('currentTime');
-            
-            if (dateElement) {
-                dateElement.textContent = now.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-            }
-            
-            if (timeElement) {
-                timeElement.textContent = now.toLocaleTimeString('en-US', {
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-            }
-        }
-
-        // Authentication functions
-        function setupAuthForms() {
-            document.getElementById('loginForm').addEventListener('submit', handleLogin);
-            document.getElementById('registerForm').addEventListener('submit', handleRegister);
-        }
-
-        function showAuthTab(tab) {
-            // Update tab buttons
-            document.querySelectorAll('.auth-tab').forEach(btn => {
-                btn.classList.remove('active', 'gradient-gold', 'text-white');
-                btn.classList.add('text-tpl-taupe');
-            });
-            
-            event.target.classList.add('active', 'gradient-gold', 'text-white');
-            event.target.classList.remove('text-tpl-taupe');
-            
-            // Show/hide forms
-            document.querySelectorAll('.auth-form').forEach(form => {
-                form.classList.add('hidden');
-            });
-            
-            document.getElementById(tab + 'Form').classList.remove('hidden');
-        }
-
-        function handleLogin(e) {
-            e.preventDefault();
-            
-            // Simulate login
-            currentUser = {
-                name: 'John Summit',
-                email: 'john@tplsummit.com',
-                initials: 'JS'
-            };
-            
-            loginUser();
-        }
-
-        function handleRegister(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(e.target);
-            currentUser = {
-                name: formData.get('firstName') + ' ' + formData.get('lastName'),
-                email: formData.get('email'),
-                initials: formData.get('firstName').charAt(0) + formData.get('lastName').charAt(0)
-            };
-            
-            loginUser();
-        }
-
-        function demoLogin() {
-            currentUser = {
-                name: 'Demo User',
-                email: 'demo@tplsummit.com',
-                initials: 'DU'
-            };
-            
-            loginUser();
-            
-            // Add sample data
-            setTimeout(() => {
-                if (confirm('Would you like to add sample TPL Summit data to explore the platform features?')) {
-                    addSampleData();
-                }
-            }, 2000);
-        }
-
-        function loginUser() {
-            document.getElementById('authModal').classList.add('hidden');
-            document.getElementById('mainPlatform').classList.remove('hidden');
-            
-            // Update user info
-            document.getElementById('userName').textContent = currentUser.name;
-            document.getElementById('userInitials').textContent = currentUser.initials;
-            
-            updateAllDisplays();
-            showNotification(`Welcome to TPL Summit Platform, ${currentUser.name}!`, 'success');
-        }
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                currentUser = null;
-                document.getElementById('authModal').classList.remove('hidden');
-                document.getElementById('mainPlatform').classList.add('hidden');
-            }
-        }
-
-        // Revenue management
-        function handleRevenueSubmit(e) {
-            e.preventDefault();
-            
-            const transaction = {
-                id: Date.now(),
-                date: document.getElementById('date').value,
-                amount: parseFloat(document.getElementById('amount').value),
-                source: document.getElementById('source').value,
-                client: document.getElementById('client').value,
-                paymentMethod: document.getElementById('paymentMethod').value || 'Not specified',
-                status: document.getElementById('status').value,
-                notes: document.getElementById('notes').value,
-                createdAt: new Date().toISOString()
-            };
-            
-            transactions.push(transaction);
-            saveData();
-            updateAllDisplays();
-            clearForm();
-            
-            showNotification(`✅ ${transaction.amount.toLocaleString()} revenue added successfully!`, 'success');
-        }
-
-        function saveData() {
-            localStorage.setItem('tpl-transactions', JSON.stringify(transactions));
-        }
-
-        function updateAllDisplays() {
-            updateDashboardMetrics();
-            updateRevenueList();
-            updateAIInsights();
-        }
-
-        function updateDashboardMetrics() {
-            const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
-            const currentMonth = new Date().getMonth();
-            const currentYear = new Date().getFullYear();
-            
-            const monthlyRevenue = transactions
-                .filter(t => {
-                    const tDate = new Date(t.date);
-                    return tDate.getMonth() === currentMonth && tDate.getFullYear() === currentYear;
-                })
-                .reduce((sum, t) => sum + t.amount, 0);
-            
-            const uniqueClients = new Set(transactions.map(t => t.client)).size;
-            const avgDeal = transactions.length > 0 ? totalRevenue / transactions.length : 0;
-            const monthName = new Date().toLocaleDateString('en-US', { month: 'long' });
-            
-            document.getElementById('dashTotalRevenue').textContent = ' + totalRevenue.toLocaleString();
-            document.getElementById('dashMonthlyRevenue').textContent = ' + monthlyRevenue.toLocaleString();
-            document.getElementById('dashActiveClients').textContent = uniqueClients;
-            document.getElementById('dashAvgDeal').textContent = ' + Math.round(avgDeal).toLocaleString();
-            document.getElementById('dashMonthName').textContent = monthName;
-        }
-
-        function updateRevenueList() {
-            const listElement = document.getElementById('revenueList');
-            
-            if (transactions.length === 0) {
-                listElement.innerHTML = `
-                    <div class="p-12 text-center text-tpl-taupe">
-                        <div class="text-6xl mb-4">⛰️</div>
-                        <h4 class="text-xl font-semibold mb-2">Ready for Revenue Tracking</h4>
-                        <p>Add your first TPL Summit income transaction to begin.</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date) - new Date(a.date));
-            
-            listElement.innerHTML = `
-                <table class="w-full">
-                    <thead class="bg-gradient-to-r from-tpl-stone to-tpl-champagne">
-                        <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Revenue Source</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Client</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Amount</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-tpl-navy uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-tpl-blush">
-                        ${sortedTransactions.map(t => `
-                            <tr class="hover:bg-tpl-stone transition-elegant">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-tpl-navy">
-                                    ${new Date(t.date).toLocaleDateString('en-US', { 
-                                        month: 'short', 
-                                        day: 'numeric',
-                                        year: 'numeric'
-                                    })}
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Project Name</th>
+                                <th>Client</th>
+                                <th>Progress</th>
+                                <th>Due Date</th>
+                                <th>Team</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Website Redesign</strong></td>
+                                <td>Acme Corporation</td>
+                                <td>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px; width: 100px;">
+                                        <div style="background: var(--success); height: 100%; width: 75%; border-radius: 4px;"></div>
+                                    </div>
+                                    <small>75%</small>
                                 </td>
-                                <td class="px-6 py-4">
-                                    <div class="text-sm font-semibold text-tpl-navy">${t.source}</div>
-                                    <div class="text-xs text-tpl-taupe">${t.paymentMethod}</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-tpl-navy">${t.client}</div>
-                                    ${t.notes ? `<div class="text-xs text-tpl-taupe">${t.notes.substring(0, 30)}${t.notes.length > 30 ? '...' : ''}</div>` : ''}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-lg font-bold text-tpl-gold">
-                                    ${t.amount.toLocaleString()}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(t.status)}">
-                                        ${t.status}
-                                    </span>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    <button onclick="editTransaction(${t.id})" class="text-tpl-gold hover:text-tpl-navy font-medium mr-3 transition-elegant">
-                                        Edit
-                                    </button>
-                                    <button onclick="deleteTransaction(${t.id})" class="text-red-500 hover:text-red-700 font-medium transition-elegant">
-                                        Delete
-                                    </button>
+                                <td>Aug 15, 2025</td>
+                                <td>👤👤👤</td>
+                                <td><span class="status-badge status-info">In Progress</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="viewProject(1)" title="View">👁️</button>
+                                    <button class="btn-icon" onclick="editProject(1)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="createArtifact(1)" title="Create Artifact">🎨</button>
                                 </td>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-            `;
-        }
+                            <tr>
+                                <td><strong>Mobile App Development</strong></td>
+                                <td>TechStart Inc</td>
+                                <td>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px; width: 100px;">
+                                        <div style="background: var(--warning); height: 100%; width: 45%; border-radius: 4px;"></div>
+                                    </div>
+                                    <small>45%</small>
+                                </td>
+                                <td>Sep 30, 2025</td>
+                                <td>👤👤👤👤👤</td>
+                                <td><span class="status-badge status-warning">Planning</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="viewProject(2)" title="View">👁️</button>
+                                    <button class="btn-icon" onclick="editProject(2)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="createArtifact(2)" title="Create Artifact">🎨</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Enterprise Platform</strong></td>
+                                <td>Global Solutions</td>
+                                <td>
+                                    <div style="background: var(--gray-200); height: 8px; border-radius: 4px; width: 100px;">
+                                        <div style="background: var(--success); height: 100%; width: 90%; border-radius: 4px;"></div>
+                                    </div>
+                                    <small>90%</small>
+                                </td>
+                                <td>Aug 5, 2025</td>
+                                <td>👤👤</td>
+                                <td><span class="status-badge status-success">Review</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="viewProject(3)" title="View">👁️</button>
+                                    <button class="btn-icon" onclick="editProject(3)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="createArtifact(3)" title="Create Artifact">🎨</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        function getStatusColor(status) {
-            switch(status) {
-                case 'Received': return 'bg-green-100 text-green-800';
-                case 'Pending': return 'bg-yellow-100 text-yellow-800';
-                case 'Processing': return 'bg-blue-100 text-blue-800';
-                case 'Partial': return 'bg-orange-100 text-orange-800';
-                default: return 'bg-gray-100 text-gray-800';
-            }
-        }
-
-        function updateAIInsights() {
-            const insights = document.getElementById('aiInsights');
-            
-            if (transactions.length === 0) {
-                insights.innerHTML = `
-                    <div class="bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg p-4">
-                        <div class="flex items-start space-x-3">
-                            <div class="text-2xl">🤖</div>
-                            <div>
-                                <h4 class="font-medium text-tpl-navy">Revenue Optimization</h4>
-                                <p class="text-sm text-tpl-taupe mt-1">Add transaction data to unlock AI-powered business insights and revenue predictions.</p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Recent Artifacts</h3>
+                            <button class="btn btn-primary" onclick="viewAllArtifacts()">View All</button>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="padding: 1rem; border-left: 4px solid var(--accent); margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+                                <strong>Interactive Dashboard Mockup</strong><br>
+                                <small style="color: var(--gray-600);">Website Redesign Project</small><br>
+                                <small style="color: var(--gray-500);">Created 2 hours ago</small><br>
+                                <div style="margin-top: 0.5rem;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="viewArtifact(1)">👁️ View</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editArtifact(1)">✏️ Edit</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="exportArtifact(1)">📤 Export</button>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem; border-left: 4px solid var(--success); margin-bottom: 1rem; background: var(--gray-50); border-radius: var(--border-radius);">
+                                <strong>User Flow Diagram</strong><br>
+                                <small style="color: var(--gray-600);">Mobile App Development</small><br>
+                                <small style="color: var(--gray-500);">Created 1 day ago</small><br>
+                                <div style="margin-top: 0.5rem;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="viewArtifact(2)">👁️ View</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editArtifact(2)">✏️ Edit</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="exportArtifact(2)">📤 Export</button>
+                                </div>
+                            </div>
+                            <div style="padding: 1rem; border-left: 4px solid var(--warning); background: var(--gray-50); border-radius: var(--border-radius);">
+                                <strong>API Documentation</strong><br>
+                                <small style="color: var(--gray-600);">Enterprise Platform</small><br>
+                                <small style="color: var(--gray-500);">Created 3 days ago</small><br>
+                                <div style="margin-top: 0.5rem;">
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="viewArtifact(3)">👁️ View</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="editArtifact(3)">✏️ Edit</button>
+                                    <button class="btn btn-secondary" style="font-size: 0.8rem; padding: 0.3rem 0.6rem;" onclick="exportArtifact(3)">📤 Export</button>
+                                </div>
                             </div>
                         </div>
                     </div>
-                `;
-                return;
-            }
 
-            // Generate AI insights based on data
-            const totalRevenue = transactions.reduce((sum, t) => sum + t.amount, 0);
-            const avgDeal = totalRevenue / transactions.length;
-            const topSource = getTopRevenueSource();
-            
-            insights.innerHTML = `
-                <div class="bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg p-4 mb-4">
-                    <div class="flex items-start space-x-3">
-                        <div class="text-2xl">🎯</div>
-                        <div>
-                            <h4 class="font-medium text-tpl-navy">Revenue Pattern Detected</h4>
-                            <p class="text-sm text-tpl-taupe mt-1">Your strongest revenue source is "${topSource}" with an average deal size of ${Math.round(avgDeal).toLocaleString()}.</p>
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Team Collaboration</h3>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="margin-bottom: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">Active Team Members</h4>
+                                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--gray-100); padding: 0.5rem; border-radius: var(--border-radius);">
+                                        <div style="width: 30px; height: 30px; background: var(--gradient-primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">JS</div>
+                                        <span>John Smith</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--gray-100); padding: 0.5rem; border-radius: var(--border-radius);">
+                                        <div style="width: 30px; height: 30px; background: var(--gradient-success); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">SJ</div>
+                                        <span>Sarah Johnson</span>
+                                    </div>
+                                    <div style="display: flex; align-items: center; gap: 0.5rem; background: var(--gray-100); padding: 0.5rem; border-radius: var(--border-radius);">
+                                        <div style="width: 30px; height: 30px; background: var(--gradient-warning); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">MD</div>
+                                        <span>Mike Davis</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div style="margin-bottom: 1.5rem;">
+                                <h4 style="margin-bottom: 0.5rem;">Recent Updates</h4>
+                                <div style="font-size: 0.9rem;">
+                                    <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">
+                                        <strong>Sarah</strong> updated the design mockup<br>
+                                        <small style="color: var(--gray-500);">15 minutes ago</small>
+                                    </div>
+                                    <div style="padding: 0.5rem 0; border-bottom: 1px solid var(--gray-200);">
+                                        <strong>Mike</strong> completed code review<br>
+                                        <small style="color: var(--gray-500);">1 hour ago</small>
+                                    </div>
+                                    <div style="padding: 0.5rem 0;">
+                                        <strong>John</strong> created new artifact<br>
+                                        <small style="color: var(--gray-500);">2 hours ago</small>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary" style="width: 100%;" onclick="openModal('teamChatModal')">💬 Team Chat</button>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gradient-to-r from-tpl-champagne to-tpl-stone rounded-lg p-4">
-                    <div class="flex items-start space-x-3">
-                        <div class="text-2xl">📈</div>
-                        <div>
-                            <h4 class="font-medium text-tpl-navy">Growth Opportunity</h4>
-                            <p class="text-sm text-tpl-taupe mt-1">Based on your data, focusing on ${topSource.toLowerCase()} could increase monthly revenue by 25-40%.</p>
+            </div>
+        </section>
+
+        <!-- Income Tracker Section -->
+        <section id="income" class="section">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Income Tracker & Financial Analytics</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" onclick="openModal('addIncomeModal')">
+                            💰 Add Income
+                        </button>
+                        <button class="btn btn-secondary" onclick="openModal('expenseModal')">
+                            📉 Add Expense
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportFinancials()">
+                            📊 Export Report
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">$247,350</div>
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-change positive">↗ +12.5% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$35,240</div>
+                        <div class="stat-label">This Month</div>
+                        <div class="stat-change positive">↗ +8.3% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$18,750</div>
+                        <div class="stat-label">Total Expenses</div>
+                        <div class="stat-change positive">↓ -5.2% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">$228,600</div>
+                        <div class="stat-label">Net Profit</div>
+                        <div class="stat-change positive">↗ +15.8% from last month</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Revenue Trends</h3>
+                            <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius);">
+                                <option>Last 6 months</option>
+                                <option>Last year</option>
+                                <option>All time</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder">📈 Revenue Growth: +15% month-over-month</div>
+                    </div>
+
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Income Sources</h3>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Project Payments</span>
+                                    <strong>$185K (75%)</strong>
+                                </div>
+                                <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                    <div style="background: var(--success); height: 100%; width: 75%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                            <div style="margin-bottom: 1rem;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Consulting</span>
+                                    <strong>$37K (15%)</strong>
+                                </div>
+                                <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                    <div style="background: var(--accent); height: 100%; width: 15%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span>Other</span>
+                                    <strong>$25K (10%)</strong>
+                                </div>
+                                <div style="background: var(--gray-200); height: 8px; border-radius: 4px;">
+                                    <div style="background: var(--warning); height: 100%; width: 10%; border-radius: 4px;"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            `;
-        }
 
-        function getTopRevenueSource() {
-            const sourceData = {};
-            transactions.forEach(t => {
-                sourceData[t.source] = (sourceData[t.source] || 0) + t.amount;
-            });
-            
-            return Object.entries(sourceData).sort((a, b) => b[1] - a[1])[0]?.[0] || 'Unknown';
-        }
-
-        // Utility functions
-        function clearForm() {
-            document.getElementById('revenueForm').reset();
-            document.getElementById('date').value = new Date().toISOString().split('T')[0];
-        }
-
-        function editTransaction(id) {
-            const transaction = transactions.find(t => t.id === id);
-            if (!transaction) return;
-
-            // Populate form
-            document.getElementById('date').value = transaction.date;
-            document.getElementById('amount').value = transaction.amount;
-            document.getElementById('source').value = transaction.source;
-            document.getElementById('client').value = transaction.client;
-            document.getElementById('paymentMethod').value = transaction.paymentMethod;
-            document.getElementById('status').value = transaction.status;
-            document.getElementById('notes').value = transaction.notes;
-
-            // Remove transaction (will be re-added on form submit)
-            deleteTransaction(id, false);
-            
-            showNotification('📝 Transaction loaded for editing. Make changes and click "Add Revenue" to save.', 'info');
-        }
-
-        function deleteTransaction(id, confirm = true) {
-            if (confirm && !window.confirm('Are you sure you want to delete this transaction?')) return;
-            
-            transactions = transactions.filter(t => t.id !== id);
-            saveData();
-            updateAllDisplays();
-            
-            if (confirm) {
-                showNotification('🗑️ Transaction deleted successfully!', 'success');
-            }
-        }
-
-        function exportRevenue() {
-            if (transactions.length === 0) {
-                showNotification('❌ No transactions to export!', 'error');
-                return;
-            }
-            
-            const csvContent = [
-                ['Date', 'Revenue Source', 'Client', 'Amount', 'Payment Method', 'Status', 'Notes'],
-                ...transactions.map(t => [
-                    t.date,
-                    t.source,
-                    t.client,
-                    t.amount,
-                    t.paymentMethod,
-                    t.status,
-                    t.notes || ''
-                ])
-            ].map(row => row.map(field => `"${field}"`).join(',')).join('\n');
-            
-            const blob = new Blob([csvContent], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `TPL-Summit-Revenue-${new Date().toISOString().split('T')[0]}.csv`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-            
-            showNotification(`📊 Exported ${transactions.length} transactions successfully!`, 'success');
-        }
-
-        function generateInvoice() {
-            showNotification('📄 Professional invoice generator coming soon!', 'info');
-        }
-
-        function addSampleData() {
-            const sampleTransactions = [
-                {
-                    id: Date.now() + 1,
-                    date: '2025-01-20',
-                    amount: 15000,
-                    source: 'Summit Registration - Executive',
-                    client: 'Fortune Global 500 Corp',
-                    paymentMethod: 'Wire Transfer',
-                    status: 'Received',
-                    notes: 'Executive summit package with VIP networking',
-                    createdAt: new Date(2025, 0, 20).toISOString()
-                },
-                {
-                    id: Date.now() + 2,
-                    date: '2025-01-22',
-                    amount: 8500,
-                    source: 'Executive Coaching',
-                    client: 'TechStart Innovations',
-                    paymentMethod: 'ACH Transfer',
-                    status: 'Received',
-                    notes: 'Q1 leadership coaching program for C-suite',
-                    createdAt: new Date(2025, 0, 22).toISOString()
-                },
-                {
-                    id: Date.now() + 3,
-                    date: '2025-01-24',
-                    amount: 25000,
-                    source: 'Platinum Sponsorship',
-                    client: 'Global Innovation Partners',
-                    paymentMethod: 'Wire Transfer',
-                    status: 'Received',
-                    notes: 'Platinum sponsor package with keynote slot',
-                    createdAt: new Date(2025, 0, 24).toISOString()
-                },
-                {
-                    id: Date.now() + 4,
-                    date: '2025-01-25',
-                    amount: 5500,
-                    source: 'Keynote Speaking',
-                    client: 'Leadership Excellence Summit',
-                    paymentMethod: 'Check',
-                    status: 'Pending',
-                    notes: 'Keynote: "Future of Executive Leadership"',
-                    createdAt: new Date().toISOString()
-                }
-            ];
-
-            transactions.push(...sampleTransactions);
-            saveData();
-            updateAllDisplays();
-            
-            showNotification('🎉 Sample TPL Summit data added! Explore the platform features.', 'success');
-        }
-
-        // Navigation
-        function showSection(sectionName) {
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(section => {
-                section.classList.add('hidden');
-            });
-            
-            // Show selected section
-            document.getElementById(sectionName + '-section').classList.remove('hidden');
-            
-            // Update navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active', 'border-tpl-gold', 'text-tpl-navy');
-                btn.classList.add('border-transparent', 'text-tpl-taupe');
-            });
-            
-            // Find and activate clicked button
-            const activeBtn = Array.from(document.querySelectorAll('.nav-btn')).find(btn => 
-                btn.onclick && btn.onclick.toString().includes(sectionName)
-            );
-            
-            if (activeBtn) {
-                activeBtn.classList.add('active', 'border-tpl-gold', 'text-tpl-navy');
-                activeBtn.classList.remove('border-transparent', 'text-tpl-taupe');
-            }
-        }
-
-        // Notifications
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `fixed top-4 right-4 p-4 rounded-xl shadow-elegant z-50 transition-elegant transform translate-x-full ${
-                type === 'success' ? 'gradient-gold text-white' :
-                type === 'error' ? 'bg-red-500 text-white' :
-                type === 'warning' ? 'bg-yellow-500 text-white' :
-                'gradient-navy text-white'
-            }`;
-            
-            notification.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <div class="text-lg">
-                        ${type === 'success' ? '✅' : type === 'error' ? '❌' : type === 'warning' ? '⚠️' : 'ℹ️'}
+                <div class="data-table">
+                    <div class="table-header">
+                        <h3 class="table-title">Recent Transactions</h3>
+                        <div class="table-actions">
+                            <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius); margin-right: 1rem;">
+                                <option>All Transactions</option>
+                                <option>Income Only</option>
+                                <option>Expenses Only</option>
+                                <option>This Month</option>
+                            </select>
+                            <button class="btn btn-secondary" onclick="reconcileTransactions()">🔄 Reconcile</button>
+                        </div>
                     </div>
-                    <div class="font-medium">${message}</div>
+                    
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Client/Vendor</th>
+                                <th>Category</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Jul 25, 2025</td>
+                                <td>Website Redesign Payment</td>
+                                <td>Acme Corporation</td>
+                                <td>Project Payment</td>
+                                <td style="color: var(--success); font-weight: bold;">+$25,000</td>
+                                <td><span class="status-badge status-success">Income</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="editTransaction(1)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="categorizeTransaction(1)" title="Categorize">🏷️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jul 23, 2025</td>
+                                <td>Office Supplies</td>
+                                <td>Office Depot</td>
+                                <td>Business Expense</td>
+                                <td style="color: var(--danger); font-weight: bold;">-$150</td>
+                                <td><span class="status-badge status-danger">Expense</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="editTransaction(2)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="categorizeTransaction(2)" title="Categorize">🏷️</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Jul 22, 2025</td>
+                                <td>Consulting Services</td>
+                                <td>TechStart Inc</td>
+                                <td>Consulting</td>
+                                <td style="color: var(--success); font-weight: bold;">+$3,500</td>
+                                <td><span class="status-badge status-success">Income</span></td>
+                                <td>
+                                    <button class="btn-icon" onclick="editTransaction(3)" title="Edit">✏️</button>
+                                    <button class="btn-icon" onclick="categorizeTransaction(3)" title="Categorize">🏷️</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Animate in
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
-            
-            // Animate out and remove
-            setTimeout(() => {
-                notification.style.transform = 'translateX(100%)';
-                setTimeout(() => {
-                    if (document.body.contains(notification)) {
-                        document.body.removeChild(notification);
-                    }
-                }, 400);
-            }, 4000);
+            </div>
+        </section><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPL Summit - Complete Enterprise Platform</title>
+    <meta name="description" content="TPL Summit: The ultimate enterprise platform for project management, CRM, accounting, and client portal solutions.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a365d;
+            --primary-light: #2d5a87;
+            --primary-dark: #0f2027;
+            --secondary: #e2e8f0;
+            --accent: #3182ce;
+            --accent-light: #4299e1;
+            --success: #38a169;
+            --warning: #d69e2e;
+            --danger: #e53e3e;
+            --dark: #1a202c;
+            --light: #f7fafc;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-success: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+            --gradient-warning: linear-gradient(135deg, #ed8936 0%, #d69e2e 100%);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px rgba(0,0,0,0.15);
+            --shadow-xl: 0 20px 40px rgba(0,0,0,0.2);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        // Auto-save
-        setInterval(() => {
-            if (transactions.length > 0) {
-                saveData();
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-900);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: var(--white);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            color: var(--gray-700);
+            text-decoration: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: var(--primary);
+            background: var(--gray-100);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            justify-content: center;
+            text-align: center;
+            white-space: nowrap;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.6s, height 0.6s;
+            transform: translate(-50%, -50%);
+            z-index: 0;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary);
+            border: 2px solid var(--gray-200);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--gradient-success);
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Landing Page */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="%23ffffff10" points="0,1000 1000,0 1000,1000"/></svg>');
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 2rem;
+            background: var(--white);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--gray-600);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--gray-200);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--gradient-primary);
+            transform: scaleY(0);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleY(1);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-description {
+            color: var(--gray-600);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Dashboard */
+        .dashboard {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .dashboard-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .dashboard-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .stat-change {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: var(--border-radius-lg);
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s ease;
+            box-shadow: var(--shadow-xl);
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
             }
-        }, 30000); // Every 30 seconds
-    </script>
-</body>
-</html>
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .close {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--gray-100);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--gray-600);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close:hover {
+            background: var(--danger);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Forms */
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--gray-300);
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
+        }
+
+        .form-group input.error,
+        .form-group select.error,
+        .form-group textarea.error {
+            border-color: var(--danger);
+        }
+
+        .form-error {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Tables */
+        .data-table {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .table-header {
+            padding: 1.5rem 2rem;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .table-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table th {
+            background: var(--gray-50);
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .table tr:hover {
+            background: var(--gray-50);
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 0.375rem 0.875rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-success {
+            background: rgba(56, 161, 105, 0.1);
+            color: var(--success);
+        }
+
+        .status-warning {
+            background: rgba(214, 158, 46, 0.1);
+            color: var(--warning);
+        }
+
+        .status-danger {
+            background: rgba(229, 62, 62, 0.1);
+            color: var(--danger);
+        }
+
+        .status-info {
+            background: rgba(49, 130, 206, 0.1);
+            color: var(--accent);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 600;
+            z-index: 3000;
+            transform: translateX(400px);
+            transition: var(--transition);
+            box-shadow: var(--shadow-lg);
+            min-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success);
+        }
+
+        .notification.error {
+            background: var(--danger);
+        }
+
+        .notification.info {
+            background: var(--accent);
+        }
+
+        .notification.warning {
+            background: var(--warning);
+        }
+
+        /* Loading States */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 4000;
+            backdrop-filter: blur(2px);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-300);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Charts & Analytics */
+        .chart-container {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow);
+            margin: 2rem 0;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .chart-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(45deg, #f3f4f6, #e5e7eb);
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* CRM Specific Styles */
+        .contact-card {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--accent);
+            margin-bottom: 1rem;
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            transform: translateX(5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .contact-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .contact-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .contact-company {
+            color: var(--gray-600);
+            font-size: 0.9rem;
+        }
+
+        .contact-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-icon {
+            padding: 0.5rem;
+            border: none;
+            background: var(--gray-100);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-icon:hover {
+            background: var(--accent);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 1rem;
+            }
+            
+            .hero {
+                padding: 4rem 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .dashboard {
+                padding: 1rem;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .dashboard-header {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .dashboard-actions {
+                width: 100%;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Focus States */
+        .btn:focus,
+        input:focus,
+        select:focus,
+        textarea:focus,
+        button:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Print Styles */
+        @media print {
+            .header,
+            .nav-actions,
+            .btn,
+            .modal {
+                display: none !important;
+            }
+            
+            .main-content {
+                margin-top: 0;
+            }
+            
+            * {
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <nav class="nav">
+            <a href="#" class="logo" onclick="showSection('landing')">
+                <div class="logo-icon">TS</div>
+                TPL Summit
+            </a>
+            
+            <ul class="nav-menu">
+                <li><a href="#" class="nav-link" onclick="showSection('landing')">Home</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('features')">Features</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('pricing')">Pricing</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('about')">About</a></li>
+                <li><a href="#" class="nav-link" onclick="showSection('support')">Support</a></li>
+            </ul>
+            
+            <div class="nav-actions">
+                <button class="btn btn-secondary" onclick="openModal('loginModal')">Login</button>
+                <button class="btn btn-primary" onclick="openModal('signupModal')">Get Started</button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <!-- Landing Page Section -->
+        <section id="landing" class="section active">
+            <!-- Hero Section -->
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Transform Your Business with TPL Summit</h1>
+                    <p>The ultimate enterprise platform combining project management, CRM, accounting, and client portal solutions in one secure, integrated system.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="openModal('signupModal')">
+                            🚀 Start Free Trial
+                        </button>
+                        <button class="btn btn-outline" onclick="showSection('features')">
+                            📋 View Features
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Overview -->
+            <div class="features">
+                <div class="container">
+                    <div class="section-header">
+                        <h2>Complete Enterprise Solution</h2>
+                        <p>Everything you need to manage your business efficiently in one integrated platform</p>
+                    </div>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">💼</div>
+                            <div class="feature-title">Advanced CRM</div>
+                            <div class="feature-description">Comprehensive customer relationship management with contact tracking, lead scoring, and automated workflows.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('crm')">Access CRM</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <div class="feature-title">Project Management</div>
+                            <div class="feature-description">Interactive artifact tools for managing complex projects with timeline tracking and team collaboration.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('projects')">Manage Projects</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">💰</div>
+                            <div class="feature-title">Income Tracker</div>
+                            <div class="feature-description">Real-time revenue tracking with detailed analytics and exportable reports for financial insights.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('income')">Track Income</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">📧</div>
+                            <div class="feature-title">Email Integration</div>
+                            <div class="feature-description">Seamless email management with templates, automation, and client communication tracking.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('email')">Email Center</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">📅</div>
+                            <div class="feature-title">Meeting Scheduler</div>
+                            <div class="feature-description">Smart scheduling with calendar integration, automated reminders, and conflict detection.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('calendar')">Schedule Meetings</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">📄</div>
+                            <div class="feature-title">Invoice Generator</div>
+                            <div class="feature-description">Professional invoicing with automated calculations, tax handling, and customizable templates.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('invoices')">Create Invoices</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">💳</div>
+                            <div class="feature-title">Payment Processing</div>
+                            <div class="feature-description">Secure multi-gateway payment processing with fraud detection and compliance monitoring.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('payments')">Process Payments</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">🛡️</div>
+                            <div class="feature-title">Client Portal</div>
+                            <div class="feature-description">Secure client access with project updates, document sharing, and communication tools.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('portal')">Client Portal</button>
+                        </div>
+                        
+                        <div class="feature-card">
+                            <div class="feature-icon">📈</div>
+                            <div class="feature-title">Advanced Analytics</div>
+                            <div class="feature-description">Comprehensive business intelligence with real-time dashboards and predictive insights.</div>
+                            <button class="btn btn-primary" onclick="accessPlatform('analytics')">View Analytics</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section id="features" class="section">
+            <div class="container" style="padding: 4rem 2rem;">
+                <div class="section-header">
+                    <h2>Platform Features</h2>
+                    <p>Discover all the powerful tools and capabilities that make TPL Summit the ultimate enterprise solution</p>
+                </div>
+                
+                <div class="features-grid">
+                    <!-- Add detailed feature descriptions here -->
+                    <div class="feature-card">
+                        <div class="feature-icon">🔗</div>
+                        <div class="feature-title">Seamless Integration</div>
+                        <div class="feature-description">All systems work together seamlessly. CRM connects to projects, invoices link to payments, and everything syncs with your calendar and email.</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <div class="feature-title">Enterprise Security</div>
+                        <div class="feature-description">Bank-level security with 2FA, encryption, audit trails, and compliance monitoring to keep your data safe.</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📱</div>
+                        <div class="feature-title">Mobile Optimized</div>
+                        <div class="feature-description">Access your business from anywhere with our fully responsive design and mobile-optimized interface.</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <div class="feature-title">Real-time Updates</div>
+                        <div class="feature-description">Get instant notifications and real-time updates across all modules for immediate business insights.</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🎨</div>
+                        <div class="feature-title">Customizable Interface</div>
+                        <div class="feature-description">Tailor the platform to your needs with customizable dashboards, workflows, and branding options.</div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Advanced Reporting</div>
+                        <div class="feature-description">Generate comprehensive reports with exportable data and visual analytics for informed decision making.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="section">
+            <div class="container" style="padding: 4rem 2rem;">
+                <div class="section-header">
+                    <h2>Choose Your Plan</h2>
+                    <p>Flexible pricing options to suit businesses of all sizes</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-title">Starter</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">$29/mo</div>
+                        <div class="feature-description">
+                            • Up to 5 projects<br>
+                            • Basic CRM features<br>
+                            • Email integration<br>
+                            • Invoice generation<br>
+                            • Standard support
+                        </div>
+                        <button class="btn btn-primary" onclick="selectPlan('starter')">Get Started</button>
+                    </div>
+                    
+                    <div class="feature-card" style="border: 3px solid var(--accent); position: relative;">
+                        <div style="position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem; font-weight: bold;">POPULAR</div>
+                        <div class="feature-title">Professional</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">$79/mo</div>
+                        <div class="feature-description">
+                            • Unlimited projects<br>
+                            • Advanced CRM & analytics<br>
+                            • Payment processing<br>
+                            • Client portal access<br>
+                            • Priority support<br>
+                            • Team collaboration
+                        </div>
+                        <button class="btn btn-primary" onclick="selectPlan('professional')">Get Started</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-title">Enterprise</div>
+                        <div style="font-size: 2rem; font-weight: bold; color: var(--primary); margin: 1rem 0;">$199/mo</div>
+                        <div class="feature-description">
+                            • Everything in Professional<br>
+                            • White-label options<br>
+                            • Custom integrations<br>
+                            • Advanced security features<br>
+                            • Dedicated account manager<br>
+                            • 24/7 phone support
+                        </div>
+                        <button class="btn btn-primary" onclick="selectPlan('enterprise')">Contact Sales</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container" style="padding: 4rem 2rem;">
+                <div class="section-header">
+                    <h2>About TPL Summit</h2>
+                    <p>Revolutionizing business management through integrated enterprise solutions</p>
+                </div>
+                
+                <div style="background: white; padding: 3rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow); max-width: 800px; margin: 0 auto;">
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 2rem;">
+                        TPL Summit was born from the recognition that modern businesses need more than disconnected tools – they need a unified platform that brings together all aspects of business management into one seamless experience.
+                    </p>
+                    
+                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--gray-700); margin-bottom: 2rem;">
+                        Our platform combines project management, CRM, accounting, client portals, and communication tools with enterprise-grade security and intuitive design. We believe that powerful business tools should be accessible, integrated, and designed with the user experience at the forefront.
+                    </p>
+                    
+                    <div style="background: var(--gray-50); padding: 2rem; border-radius: var(--border-radius); margin: 2rem 0;">
+                        <h3 style="color: var(--primary); margin-bottom: 1rem;">Our Mission</h3>
+                        <p style="color: var(--gray-700); line-height: 1.6;">
+                            To empower businesses with integrated, secure, and intuitive tools that eliminate the complexity of managing multiple systems while providing the depth and functionality needed for enterprise-level operations.
+                        </p>
+                    </div>
+                    
+                    <div class="stats-grid" style="margin-top: 3rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">500+</div>
+                            <div style="color: var(--gray-600);">Active Businesses</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">99.9%</div>
+                            <div style="color: var(--gray-600);">Uptime Guarantee</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: bold; color: var(--primary);">24/7</div>
+                            <div style="color: var(--gray-600);">Support Available</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Support Section -->
+        <section id="support" class="section">
+            <div class="container" style="padding: 4rem 2rem;">
+                <div class="section-header">
+                    <h2>Support & Resources</h2>
+                    <p>Get the help you need to succeed with TPL Summit</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">📚</div>
+                        <div class="feature-title">Documentation</div>
+                        <div class="feature-description">Comprehensive guides, tutorials, and API documentation to help you get the most out of TPL Summit.</div>
+                        <button class="btn btn-primary" onclick="openSupport('docs')">View Docs</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">💬</div>
+                        <div class="feature-title">Live Chat</div>
+                        <div class="feature-description">Get instant help from our support team with live chat available during business hours.</div>
+                        <button class="btn btn-primary" onclick="openSupport('chat')">Start Chat</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🎥</div>
+                        <div class="feature-title">Video Tutorials</div>
+                        <div class="feature-description">Step-by-step video guides covering all aspects of the platform from basic setup to advanced features.</div>
+                        <button class="btn btn-primary" onclick="openSupport('videos')">Watch Videos</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">🤝</div>
+                        <div class="feature-title">Onboarding</div>
+                        <div class="feature-description">Personalized onboarding sessions to help you set up and configure TPL Summit for your business needs.</div>
+                        <button class="btn btn-primary" onclick="openSupport('onboarding')">Schedule Setup</button>
+                    </div>
+                </div>
+                
+                <div style="background: white; padding: 2rem; border-radius: var(--border-radius-lg); box-shadow: var(--shadow); margin-top: 3rem; text-align: center;">
+                    <h3 style="color: var(--primary); margin-bottom: 1rem;">Need Help?</h3>
+                    <p style="color: var(--gray-600); margin-bottom: 2rem;">Our support team is here to help you succeed. Contact us anytime.</p>
+                    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn btn-primary" onclick="openModal('contactModal')">📧 Email Support</button>
+                        <button class="btn btn-secondary" onclick="openSupport('phone')">📞 Call Us</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (After Login) -->
+        <section id="dashboard" class="section">
+            <div class="dashboard">
+                <div class="dashboard-header">
+                    <h1 class="dashboard-title">Welcome back, John!</h1>
+                    <div class="dashboard-actions">
+                        <button class="btn btn-primary" onclick="openModal('quickActionModal')">
+                            ⚡ Quick Action
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportData()">
+                            📊 Export Data
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalRevenue">$247,350</div>
+                        <div class="stat-label">Total Revenue</div>
+                        <div class="stat-change positive">↗ +12.5% from last month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="activeProjects">18</div>
+                        <div class="stat-label">Active Projects</div>
+                        <div class="stat-change positive">↗ +3 new this week</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalClients">156</div>
+                        <div class="stat-label">Total Clients</div>
+                        <div class="stat-change positive">↗ +8 this month</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="pendingInvoices">7</div>
+                        <div class="stat-label">Pending Invoices</div>
+                        <div class="stat-change negative">↓ -2 from last week</div>
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3 class="chart-title">Revenue Trends</h3>
+                            <select style="padding: 0.5rem; border: 1px solid var(--gray-300); border-radius: var(--border-radius);">
+                                <option>Last 6 months</option>
+                                <option>Last year</option>
+                                <option>All time</option>
+                            </select>
+                        </div>
+                        <div class="chart-placeholder">📈 Revenue growing 15% month-over-month</div>
+                    </div>
+                    
+                    <div class="data-table">
+                        <div class="table-header">
+                            <h3 class="table-title">Recent Activity</h3>
+                        </div>
+                        <div style="padding: 1rem;">
+                            <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200);">
+                                <strong>New project created</strong><br>
+                                <small style="color: var(--gray-600);">Website redesign for Acme Corp</small><br>
+                                <small style="color: var(--gray-500);">2 hours ago</small>
+                            </div>
+                            <div style="padding: 0.75rem 0; border-bottom: 1px solid var(--gray-200);">
+                                <strong>Invoice sent</strong><br>
+                                <small style="color: var(--gray-600);">INV-2025-089 to TechStart Inc</small><br>
+                                <small style="color: var(--gray-500);">5 hours ago</small>
+                            </div>
+                            <div style="padding: 0.75rem 0;">
+                                <strong>Payment received</strong><br>
+                                <small style="color: var(--gray-600);">$15,000 from Global Solutions</small><br>
+                                <small style="color: var(--gray-500);">1 day ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">💼</div>
+                        <div class="feature-title">CRM Management</div>
+                        <div class="feature-description">Manage contacts, track leads, and analyze customer relationships with advanced CRM tools.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('crm')">Open CRM</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📊</div>
+                        <div class="feature-title">Project Management</div>
+                        <div class="feature-description">Track project progress with interactive artifacts and team collaboration tools.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('projects')">Manage Projects</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-title">Income Tracking</div>
+                        <div class="feature-description">Monitor revenue streams with detailed analytics and exportable financial reports.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('income')">Track Income</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📧</div>
+                        <div class="feature-title">Email Center</div>
+                        <div class="feature-description">Integrated email management with templates and automated client communication.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('email')">Email Center</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-title">Meeting Scheduler</div>
+                        <div class="feature-description">Smart scheduling with calendar integration and automated reminder systems.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('calendar')">Schedule Meetings</button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon">📄</div>
+                        <div class="feature-title">Invoice Generator</div>
+                        <div class="feature-description">Create professional invoices with automated calculations and payment tracking.</div>
+                        <button class="btn btn-primary" onclick="showPlatformSection('invoices')">Create Invoices</button>
+                    </div>
+                </div>
+            </div>
+        </section>
