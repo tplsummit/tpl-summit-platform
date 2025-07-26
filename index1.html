@@ -1,0 +1,1001 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  User, DollarSign, Calendar, FileText, Users, Settings, 
+  Shield, Database, BarChart3, PlusCircle, Search, Filter,
+  Download, Upload, Bell, Home, CreditCard, Receipt,
+  CheckCircle, AlertCircle, Clock, TrendingUp, Activity,
+  Lock, Eye, EyeOff, Menu, X, ChevronDown, ChevronRight
+} from 'lucide-react';
+
+const TPLSummitPlatform = () => {
+  const [activeModule, setActiveModule] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [user, setUser] = useState({ name: 'John Doe', role: 'Admin', avatar: null });
+  const [notifications, setNotifications] = useState(3);
+  
+  // Data states
+  const [incomeData, setIncomeData] = useState([]);
+  const [clients, setClients] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [meetings, setMeetings] = useState([]);
+  const [invoices, setInvoices] = useState([]);
+  const [receipts, setReceipts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Security state
+  const [securityLevel, setSecurityLevel] = useState('high');
+  const [encryptionEnabled, setEncryptionEnabled] = useState(true);
+  const [auditLog, setAuditLog] = useState([]);
+
+  // Mock data initialization
+  useEffect(() => {
+    initializeMockData();
+    startSecurityMonitoring();
+  }, []);
+
+  const initializeMockData = () => {
+    // Initialize with sample data
+    setIncomeData([
+      { id: 1, date: '2025-01-15', source: 'Summit Registration', amount: 2500, client: 'Tech Corp', status: 'Received' },
+      { id: 2, date: '2025-01-20', source: 'Workshop Fees', amount: 1200, client: 'StartupXYZ', status: 'Pending' }
+    ]);
+    
+    setClients([
+      { id: 1, name: 'Tech Corp', email: 'contact@techcorp.com', status: 'Active', totalRevenue: 15000 },
+      { id: 2, name: 'StartupXYZ', email: 'hello@startupxyz.com', status: 'Prospect', totalRevenue: 5000 }
+    ]);
+
+    setProjects([
+      { id: 1, name: 'TPL Summit 2025', client: 'Tech Corp', status: 'In Progress', progress: 65 },
+      { id: 2, name: 'Workshop Series', client: 'StartupXYZ', status: 'Planning', progress: 30 }
+    ]);
+  };
+
+  const startSecurityMonitoring = () => {
+    // Simulate security monitoring
+    setAuditLog([
+      { timestamp: new Date().toISOString(), action: 'Login', user: 'Admin', ip: '192.168.1.1', status: 'Success' },
+      { timestamp: new Date().toISOString(), action: 'Data Access', user: 'Admin', resource: 'Income Data', status: 'Authorized' }
+    ]);
+  };
+
+  const modules = [
+    { id: 'dashboard', name: 'Dashboard', icon: Home },
+    { id: 'income', name: 'Income Tracker', icon: DollarSign },
+    { id: 'crm', name: 'Client Management', icon: Users },
+    { id: 'projects', name: 'Project Manager', icon: FileText },
+    { id: 'scheduler', name: 'Meeting Scheduler', icon: Calendar },
+    { id: 'accounting', name: 'Accounting', icon: BarChart3 },
+    { id: 'invoicing', name: 'Invoicing', icon: CreditCard },
+    { id: 'receipts', name: 'Receipt Manager', icon: Receipt },
+    { id: 'portal', name: 'Client Portal', icon: Shield },
+    { id: 'security', name: 'Security Center', icon: Lock },
+    { id: 'settings', name: 'Settings', icon: Settings }
+  ];
+
+  const renderDashboard = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-900">TPL Summit Command Center</h1>
+        <div className="flex space-x-4">
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+            <PlusCircle className="w-4 h-4 inline mr-2" />
+            Quick Add
+          </button>
+          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors">
+            <Download className="w-4 h-4 inline mr-2" />
+            Export Data
+          </button>
+        </div>
+      </div>
+
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <MetricCard 
+          title="Total Revenue" 
+          value="$47,250" 
+          change="+12%" 
+          icon={DollarSign} 
+          color="green" 
+        />
+        <MetricCard 
+          title="Active Clients" 
+          value="24" 
+          change="+3" 
+          icon={Users} 
+          color="blue" 
+        />
+        <MetricCard 
+          title="Projects" 
+          value="8" 
+          change="+2" 
+          icon={FileText} 
+          color="purple" 
+        />
+        <MetricCard 
+          title="Meetings Today" 
+          value="5" 
+          change="0" 
+          icon={Calendar} 
+          color="orange" 
+        />
+      </div>
+
+      {/* Recent Activity */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h3 className="text-lg font-semibold mb-4">Recent Transactions</h3>
+          <div className="space-y-3">
+            {incomeData.slice(0, 5).map(item => (
+              <div key={item.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium">{item.source}</p>
+                  <p className="text-sm text-gray-600">{item.client}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-bold text-green-600">${item.amount.toLocaleString()}</p>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    item.status === 'Received' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {item.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h3 className="text-lg font-semibold mb-4">Security Status</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span>System Security</span>
+              <span className="text-green-600 font-medium">✓ Secure</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Data Encryption</span>
+              <span className="text-green-600 font-medium">✓ Active</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Backup Status</span>
+              <span className="text-green-600 font-medium">✓ Updated</span>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Access Monitoring</span>
+              <span className="text-green-600 font-medium">✓ Online</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderIncomeTracker = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Income Tracker</h2>
+        <div className="flex space-x-3">
+          <button className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+            <PlusCircle className="w-4 h-4 inline mr-2" />
+            Add Income
+          </button>
+          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+            <Download className="w-4 h-4 inline mr-2" />
+            Export
+          </button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">This Month</h3>
+          <p className="text-3xl font-bold text-green-600">$23,450</p>
+          <p className="text-sm text-gray-500">+15% from last month</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Pending</h3>
+          <p className="text-3xl font-bold text-yellow-600">$5,200</p>
+          <p className="text-sm text-gray-500">3 transactions</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Revenue</h3>
+          <p className="text-3xl font-bold text-blue-600">$47,250</p>
+          <p className="text-sm text-gray-500">All time</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border">
+        <div className="p-6 border-b">
+          <div className="flex justify-between items-center">
+            <h3 className="font-semibold">Recent Transactions</h3>
+            <div className="flex space-x-2">
+              <input 
+                type="text" 
+                placeholder="Search..." 
+                className="px-3 py-2 border rounded-lg text-sm"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button className="p-2 border rounded-lg hover:bg-gray-50">
+                <Filter className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-medium">Date</th>
+                <th className="text-left p-4 font-medium">Source</th>
+                <th className="text-left p-4 font-medium">Client</th>
+                <th className="text-left p-4 font-medium">Amount</th>
+                <th className="text-left p-4 font-medium">Status</th>
+                <th className="text-left p-4 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {incomeData.filter(item => 
+                item.source.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                item.client.toLowerCase().includes(searchTerm.toLowerCase())
+              ).map(item => (
+                <tr key={item.id} className="border-b hover:bg-gray-50">
+                  <td className="p-4">{new Date(item.date).toLocaleDateString()}</td>
+                  <td className="p-4">{item.source}</td>
+                  <td className="p-4">{item.client}</td>
+                  <td className="p-4 font-semibold text-green-600">${item.amount.toLocaleString()}</td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      item.status === 'Received' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <button className="text-blue-600 hover:text-blue-800 mr-3">Edit</button>
+                    <button className="text-red-600 hover:text-red-800">Delete</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderCRM = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Client Management</h2>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <PlusCircle className="w-4 h-4 inline mr-2" />
+          Add Client
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Clients</h3>
+          <p className="text-3xl font-bold text-blue-600">{clients.length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Active Clients</h3>
+          <p className="text-3xl font-bold text-green-600">{clients.filter(c => c.status === 'Active').length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Revenue</h3>
+          <p className="text-3xl font-bold text-green-600">${clients.reduce((sum, c) => sum + c.totalRevenue, 0).toLocaleString()}</p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border">
+        <div className="p-6 border-b">
+          <h3 className="font-semibold">Client Directory</h3>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-6">
+          {clients.map(client => (
+            <div key={client.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div className="flex justify-between items-start mb-3">
+                <h4 className="font-semibold">{client.name}</h4>
+                <span className={`px-2 py-1 rounded-full text-xs ${
+                  client.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {client.status}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">{client.email}</p>
+              <p className="text-lg font-bold text-green-600">${client.totalRevenue.toLocaleString()}</p>
+              <div className="flex space-x-2 mt-3">
+                <button className="text-blue-600 text-sm hover:underline">View</button>
+                <button className="text-green-600 text-sm hover:underline">Contact</button>
+                <button className="text-gray-600 text-sm hover:underline">Edit</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderSecurity = () => (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Security Center</h2>
+        <div className="flex space-x-3">
+          <span className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+            System Secure
+          </span>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-700">Encryption</h3>
+              <p className="text-2xl font-bold text-green-600">AES-256</p>
+            </div>
+            <Shield className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-700">Firewall</h3>
+              <p className="text-2xl font-bold text-green-600">Active</p>
+            </div>
+            <Lock className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-700">Backup</h3>
+              <p className="text-2xl font-bold text-blue-600">Daily</p>
+            </div>
+            <Database className="w-8 h-8 text-blue-600" />
+          </div>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="font-semibold text-gray-700">Uptime</h3>
+              <p className="text-2xl font-bold text-green-600">99.9%</p>
+            </div>
+            <Activity className="w-8 h-8 text-green-600" />
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h3 className="text-lg font-semibold mb-4">Security Settings</h3>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between">
+              <span>Two-Factor Authentication</span>
+              <button className="bg-green-600 text-white px-3 py-1 rounded text-sm">Enabled</button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Auto-Lock Session</span>
+              <select className="border rounded px-2 py-1 text-sm">
+                <option>15 minutes</option>
+                <option>30 minutes</option>
+                <option>1 hour</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Login Notifications</span>
+              <button className="bg-green-600 text-white px-3 py-1 rounded text-sm">On</button>
+            </div>
+            <div className="flex items-center justify-between">
+              <span>Data Encryption Level</span>
+              <select className="border rounded px-2 py-1 text-sm">
+                <option>AES-256 (High)</option>
+                <option>AES-128 (Medium)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-xl shadow-sm border p-6">
+          <h3 className="text-lg font-semibold mb-4">Audit Log</h3>
+          <div className="space-y-3 max-h-64 overflow-y-auto">
+            {auditLog.map((log, index) => (
+              <div key={index} className="flex justify-between items-center p-2 bg-gray-50 rounded text-sm">
+                <div>
+                  <p className="font-medium">{log.action}</p>
+                  <p className="text-gray-600">{log.user} - {log.ip}</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs text-gray-500">{new Date(log.timestamp).toLocaleString()}</p>
+                  <span className={`text-xs px-2 py-1 rounded-full ${
+                    log.status === 'Success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  }`}>
+                    {log.status}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border p-6">
+        <h3 className="text-lg font-semibold mb-4">Database Integration Status</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {['Income Tracker', 'CRM Database', 'Project Manager', 'Scheduler', 'Invoicing', 'Receipt Manager'].map(db => (
+            <div key={db} className="flex items-center justify-between p-3 border rounded-lg">
+              <span className="font-medium">{db}</span>
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <span className="text-sm text-green-600">Connected</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const MetricCard = ({ title, value, change, icon: Icon, color }) => (
+    <div className="bg-white p-6 rounded-xl shadow-sm border hover:shadow-md transition-shadow">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-sm font-medium text-gray-600">{title}</p>
+          <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <p className={`text-sm ${change.startsWith('+') ? 'text-green-600' : 'text-gray-600'}`}>
+            {change} from last period
+          </p>
+        </div>
+        <div className={`p-3 rounded-lg bg-${color}-100`}>
+          <Icon className={`w-6 h-6 text-${color}-600`} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderModule = () => {
+    switch (activeModule) {
+      case 'dashboard': return renderDashboard();
+      case 'income': return renderIncomeTracker();
+      case 'crm': return renderCRM();
+      case 'security': return renderSecurity();
+      case 'projects': return (
+        <div className="p-8 text-center">
+          <FileText className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Project Manager</h3>
+          <p className="text-gray-600">Interactive project management tools coming soon</p>
+        </div>
+      );
+      case 'scheduler': return (
+        <div className="p-8 text-center">
+          <Calendar className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Meeting Scheduler</h3>
+          <p className="text-gray-600">Integrated scheduling system with client portal access</p>
+        </div>
+      );
+      case 'accounting': return (
+        <div className="p-8 text-center">
+          <BarChart3 className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Accounting Suite</h3>
+          <p className="text-gray-600">Comprehensive accounting tools with automated reporting</p>
+        </div>
+      );
+      case 'invoicing': return (
+        <div className="p-8 text-center">
+          <CreditCard className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Invoicing System</h3>
+          <p className="text-gray-600">Professional invoicing with payment tracking</p>
+        </div>
+      );
+      case 'receipts': return (
+        <div className="p-8 text-center">
+          <Receipt className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Receipt Manager</h3>
+          <p className="text-gray-600">Digital receipt management and expense tracking</p>
+        </div>
+      );
+      case 'portal': return (
+        <div className="p-8 text-center">
+          <Shield className="w-16 h-16 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Client Portal</h3>
+          <p className="text-gray-600">Secure client access with streamlined onboarding</p>
+        </div>
+      );
+      default: return renderDashboard();
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="flex items-center justify-between px-6 py-4">
+          <div className="flex items-center space-x-4">
+            <button 
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
+              {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+            <div className="flex items-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm mr-3">
+                TPL
+              </div>
+              <h1 className="text-xl font-bold">Summit Platform</h1>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-4">
+            <div className="relative">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <input 
+                type="text" 
+                placeholder="Search..."
+                className="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            
+            <div className="relative">
+              <button className="p-2 hover:bg-gray-100 rounded-lg relative">
+                <Bell className="w-5 h-5" />
+                {notifications > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {notifications}
+                  </span>
+                )}
+              </button>
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                <User className="w-4 h-4" />
+              </div>
+              <span className="font-medium">{user.name}</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div className="flex">
+        {/* Sidebar */}
+        <aside className={`bg-white shadow-sm border-r transition-all duration-300 ${
+          sidebarOpen ? 'w-64' : 'w-16'
+        }`}>
+          <nav className="p-4">
+            <div className="space-y-2">
+              {modules.map(module => {
+                const Icon = module.icon;
+                return (
+                  <button
+                    key={module.id}
+                    onClick={() => setActiveModule(module.id)}
+                    className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-colors ${
+                      activeModule === module.id 
+                        ? 'bg-blue-100 text-blue-700' 
+                        : 'text-gray-600 hover:bg-gray-100'
+                    }`}
+                  >
+                    <Icon className="w-5 h-5" />
+                    {sidebarOpen && <span className="font-medium">{module.name}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </nav>
+        </aside>
+
+        {/* Main Content */}
+        <main className="flex-1 p-6">
+          {loading ? (
+            <div className="flex items-center justify-center h-64">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            </div>
+          ) : (
+            renderModule()
+          )}
+        </main>
+      </div>
+
+      {/* Security Alert Modal */}
+      {securityLevel === 'alert' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div className="flex items-center space-x-3 mb-4">
+              <AlertCircle className="w-6 h-6 text-red-600" />
+              <h3 className="text-lg font-semibold">Security Alert</h3>
+            </div>
+            <p className="text-gray-600 mb-4">
+              Unusual activity detected. Please verify your identity.
+            </p>
+            <div className="flex space-x-3">
+              <button 
+                onClick={() => setSecurityLevel('high')}
+                className="flex-1 bg-red-600 text-white py-2 rounded-lg hover:bg-red-700"
+              >
+                Verify Identity
+              </button>
+              <button 
+                onClick={() => setSecurityLevel('high')}
+                className="flex-1 border border-gray-300 py-2 rounded-lg hover:bg-gray-50"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quick Actions Floating Button */}
+      <div className="fixed bottom-6 right-6">
+        <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-shadow">
+          <PlusCircle className="w-6 h-6" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+// Additional Components for Extended Functionality
+
+const ProjectManager = () => {
+  const [projects, setProjects] = useState([
+    { 
+      id: 1, 
+      name: 'TPL Summit 2025', 
+      client: 'Tech Corp', 
+      status: 'In Progress', 
+      progress: 65, 
+      deadline: '2025-03-15',
+      team: ['John', 'Sarah', 'Mike'],
+      budget: 50000,
+      spent: 32500
+    },
+    { 
+      id: 2, 
+      name: 'Workshop Series', 
+      client: 'StartupXYZ', 
+      status: 'Planning', 
+      progress: 30,
+      deadline: '2025-04-01',
+      team: ['Alice', 'Bob'],
+      budget: 25000,
+      spent: 7500
+    }
+  ]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Project Manager</h2>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <PlusCircle className="w-4 h-4 inline mr-2" />
+          New Project
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Active Projects</h3>
+          <p className="text-3xl font-bold text-blue-600">{projects.filter(p => p.status === 'In Progress').length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Budget</h3>
+          <p className="text-3xl font-bold text-green-600">${projects.reduce((sum, p) => sum + p.budget, 0).toLocaleString()}</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Budget Used</h3>
+          <p className="text-3xl font-bold text-orange-600">
+            {Math.round(projects.reduce((sum, p) => sum + p.spent, 0) / projects.reduce((sum, p) => sum + p.budget, 0) * 100)}%
+          </p>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {projects.map(project => (
+          <div key={project.id} className="bg-white rounded-xl shadow-sm border p-6">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <h3 className="text-lg font-semibold">{project.name}</h3>
+                <p className="text-gray-600">{project.client}</p>
+              </div>
+              <span className={`px-3 py-1 rounded-full text-sm ${
+                project.status === 'In Progress' ? 'bg-blue-100 text-blue-800' : 'bg-yellow-100 text-yellow-800'
+              }`}>
+                {project.status}
+              </span>
+            </div>
+            
+            <div className="space-y-3">
+              <div>
+                <div className="flex justify-between text-sm mb-1">
+                  <span>Progress</span>
+                  <span>{project.progress}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2">
+                  <div 
+                    className="bg-blue-600 h-2 rounded-full" 
+                    style={{ width: `${project.progress}%` }}
+                  ></div>
+                </div>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Deadline</span>
+                <span className="text-sm font-medium">{new Date(project.deadline).toLocaleDateString()}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Budget</span>
+                <span className="text-sm font-medium">${project.spent.toLocaleString()} / ${project.budget.toLocaleString()}</span>
+              </div>
+              
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Team</span>
+                <div className="flex -space-x-2">
+                  {project.team.map((member, index) => (
+                    <div key={index} className="w-6 h-6 bg-gray-300 rounded-full border-2 border-white flex items-center justify-center text-xs">
+                      {member[0]}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex space-x-2 mt-4">
+              <button className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 text-sm">
+                View Details
+              </button>
+              <button className="flex-1 border border-gray-300 py-2 rounded-lg hover:bg-gray-50 text-sm">
+                Edit Project
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const MeetingScheduler = () => {
+  const [meetings, setMeetings] = useState([
+    {
+      id: 1,
+      title: 'Client Onboarding - Tech Corp',
+      date: '2025-01-26',
+      time: '10:00',
+      duration: 60,
+      attendees: ['john@techcorp.com', 'sarah@tplsummit.com'],
+      status: 'Confirmed',
+      type: 'Video Call'
+    },
+    {
+      id: 2,
+      title: 'Project Review - StartupXYZ',
+      date: '2025-01-26',
+      time: '14:30',
+      duration: 45,
+      attendees: ['alice@startupxyz.com', 'mike@tplsummit.com'],
+      status: 'Pending',
+      type: 'In Person'
+    }
+  ]);
+
+  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Meeting Scheduler</h2>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <PlusCircle className="w-4 h-4 inline mr-2" />
+          Schedule Meeting
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border">
+          <div className="p-6 border-b">
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold">Today's Schedule</h3>
+              <input 
+                type="date" 
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="border rounded-lg px-3 py-2"
+              />
+            </div>
+          </div>
+          
+          <div className="p-6 space-y-4">
+            {meetings.filter(meeting => meeting.date === selectedDate).map(meeting => (
+              <div key={meeting.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h4 className="font-semibold">{meeting.title}</h4>
+                    <p className="text-sm text-gray-600">{meeting.time} - {meeting.duration} min - {meeting.type}</p>
+                  </div>
+                  <span className={`px-2 py-1 rounded-full text-xs ${
+                    meeting.status === 'Confirmed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                  }`}>
+                    {meeting.status}
+                  </span>
+                </div>
+                
+                <div className="flex items-center space-x-4 text-sm text-gray-600">
+                  <span>👥 {meeting.attendees.length} attendees</span>
+                  <span>📧 {meeting.attendees.join(', ')}</span>
+                </div>
+                
+                <div className="flex space-x-2 mt-3">
+                  <button className="text-blue-600 text-sm hover:underline">Join</button>
+                  <button className="text-green-600 text-sm hover:underline">Reschedule</button>
+                  <button className="text-red-600 text-sm hover:underline">Cancel</button>
+                </div>
+              </div>
+            ))}
+            
+            {meetings.filter(meeting => meeting.date === selectedDate).length === 0 && (
+              <div className="text-center py-8 text-gray-500">
+                <Calendar className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No meetings scheduled for this date</p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <h3 className="font-semibold mb-4">Quick Stats</h3>
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span className="text-gray-600">Today</span>
+                <span className="font-semibold">{meetings.filter(m => m.date === new Date().toISOString().split('T')[0]).length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">This Week</span>
+                <span className="font-semibold">8</span>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Pending</span>
+                <span className="font-semibold text-yellow-600">{meetings.filter(m => m.status === 'Pending').length}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl shadow-sm border p-6">
+            <h3 className="font-semibold mb-4">Meeting Rooms</h3>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center p-2 rounded bg-green-50">
+                <span className="text-sm">Conference Room A</span>
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Available</span>
+              </div>
+              <div className="flex justify-between items-center p-2 rounded bg-red-50">
+                <span className="text-sm">Conference Room B</span>
+                <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Occupied</span>
+              </div>
+              <div className="flex justify-between items-center p-2 rounded bg-green-50">
+                <span className="text-sm">Virtual Room 1</span>
+                <span className="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Available</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const InvoicingSystem = () => {
+  const [invoices, setInvoices] = useState([
+    {
+      id: 'INV-001',
+      client: 'Tech Corp',
+      amount: 5000,
+      status: 'Paid',
+      dueDate: '2025-01-20',
+      issueDate: '2025-01-05',
+      items: [
+        { description: 'Summit Registration', quantity: 10, rate: 500 }
+      ]
+    },
+    {
+      id: 'INV-002',
+      client: 'StartupXYZ',
+      amount: 2500,
+      status: 'Pending',
+      dueDate: '2025-02-01',
+      issueDate: '2025-01-15',
+      items: [
+        { description: 'Workshop Package', quantity: 5, rate: 500 }
+      ]
+    }
+  ]);
+
+  return (
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">Invoicing System</h2>
+        <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <PlusCircle className="w-4 h-4 inline mr-2" />
+          Create Invoice
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Outstanding</h3>
+          <p className="text-3xl font-bold text-red-600">
+            ${invoices.filter(inv => inv.status === 'Pending').reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Paid This Month</h3>
+          <p className="text-3xl font-bold text-green-600">
+            ${invoices.filter(inv => inv.status === 'Paid').reduce((sum, inv) => sum + inv.amount, 0).toLocaleString()}
+          </p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Total Invoices</h3>
+          <p className="text-3xl font-bold text-blue-600">{invoices.length}</p>
+        </div>
+        <div className="bg-white p-6 rounded-xl shadow-sm border">
+          <h3 className="font-semibold text-gray-700 mb-2">Overdue</h3>
+          <p className="text-3xl font-bold text-orange-600">
+            {invoices.filter(inv => new Date(inv.dueDate) < new Date() && inv.status === 'Pending').length}
+          </p>
+        </div>
+      </div>
+
+      <div className="bg-white rounded-xl shadow-sm border">
+        <div className="p-6 border-b">
+          <h3 className="font-semibold">Recent Invoices</h3>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="text-left p-4 font-medium">Invoice #</th>
+                <th className="text-left p-4 font-medium">Client</th>
+                <th className="text-left p-4 font-medium">Amount</th>
+                <th className="text-left p-4 font-medium">Issue Date</th>
+                <th className="text-left p-4 font-medium">Due Date</th>
+                <th className="text-left p-4 font-medium">Status</th>
+                <th className="text-left p-4 font-medium">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invoices.map(invoice => (
+                <tr key={invoice.id} className="border-b hover:bg-gray-50">
+                  <td className="p-4 font-medium">{invoice.id}</td>
+                  <td className="p-4">{invoice.client}</td>
+                  <td className="p-4 font-semibold">${invoice.amount.toLocaleString()}</td>
+                  <td className="p-4">{new Date(invoice.issueDate).toLocaleDateString()}</td>
+                  <td className="p-4">{new Date(invoice.dueDate).toLocaleDateString()}</td>
+                  <td className="p-4">
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      invoice.status === 'Paid' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }`}>
+                      {invoice.status}
+                    </span>
+                  </td>
+                  <td className="p-4">
+                    <div className="flex space-x-2">
+                      <button className="text-blue-600 hover:text-blue-800 text-sm">View</button>
+                      <button className="text-green-600 hover:text-green-800 text-sm">Send</button>
+                      <button className="text-gray-600 hover:text-gray-800 text-sm">Edit</button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default TPLSummitPlatform;
